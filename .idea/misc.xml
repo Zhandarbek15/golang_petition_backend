@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="excludedPrintfFunctions.xml">
+    <option name="excludedDescriptors">
+      <set>
+        <PrintfFuncDescriptorState>
+          <option name="importPath" value="github.com/sirupsen/logrus" />
+          <option name="name" value="Errorf" />
+          <option name="receiver" value="*Logger" />
+        </PrintfFuncDescriptorState>
+      </set>
+    </option>
+    <option name="excludedNames">
+      <set>
+        <option value="Errorf" />
+      </set>
+    </option>
+  </component>
+</project>

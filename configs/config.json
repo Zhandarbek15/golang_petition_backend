@@ -1,0 +1,14 @@
+{
+  "app": {
+    "bind_addr": "127.0.0.1",
+    "bind_port": "8080",
+    "log_level": "debug"
+  },
+  "database": {
+    "host": "mysql-8.0",
+    "port": "3306",
+    "username": "root",
+    "password": "",
+    "database": "petition2"
+  }
+}
