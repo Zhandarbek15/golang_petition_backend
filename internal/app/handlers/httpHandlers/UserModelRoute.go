@@ -27,6 +27,7 @@ func (ur *UserModelRoute) BindUserToRoute(route *gin.RouterGroup) {
 	roleAdminMiddleware := middleware.NewRoleAdminMiddleware(ur.logger)
 
 	route.POST("/registration", ur.createUser)
+	// TODO : Нужно чтобы старое удалялось когда новый раз логин сделает когда старый не истек
 	route.POST("/login", ur.login)
 	route.GET("/logout", authMiddleware, ur.logout)
 	route.GET("/refresh", ur.refreshToken)

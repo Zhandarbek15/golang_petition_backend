@@ -33,7 +33,7 @@ func savePrivateKeyToFile(privateKey *rsa.PrivateKey, filename string) error {
 
 func main() {
 	privateKey, _ := rsa.GenerateKey(rand.Reader, 2048)
-	err := savePrivateKeyToFile(privateKey, "C:\\Users\\Жандарбек\\GolandProjects\\petition_api\\configs\\private_key.pem")
+	err := savePrivateKeyToFile(privateKey, "..\\..\\configs\\private_key.pem")
 	if err != nil {
 		panic(err)
 	}

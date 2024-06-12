@@ -139,8 +139,8 @@ func (ur *UserModelRoute) login(c *gin.Context) {
 
 	setTime := time.Now()
 	// Привязка токенов в куки
-	c.SetCookie("access_token", accessToken, int(setTime.Add(time.Minute*60).Unix()), "/", "http://localhost:4200", false, true)
-	c.SetCookie("refresh_token", refreshToken, int(setTime.Add(time.Hour*24*7).Unix()), "/", "http://localhost:4200", false, true)
+	c.SetCookie("access_token", accessToken, int(setTime.Add(time.Minute*60).Unix()), "/", "http://localhost", false, true)
+	c.SetCookie("refresh_token", refreshToken, int(setTime.Add(time.Hour*24*7).Unix()), "/", "http://localhost", false, true)
 
 	c.JSON(http.StatusOK, user)
 }

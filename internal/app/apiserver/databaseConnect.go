@@ -68,8 +68,6 @@ func createDatabaseIfNotExistsAndConnect(db *gorm.DB, config DatabaseConfig) (*g
 			return nil, err
 		}
 
-		err = gormDB.AutoMigrate(models.UserModel{}, models.RefreshSession{})
-
 		return gormDB, nil // База данных уже существует
 	} else {
 		// Тут происходит если нет базы данных и нужно создать и вернуть
@@ -92,7 +90,19 @@ func createDatabaseIfNotExistsAndConnect(db *gorm.DB, config DatabaseConfig) (*g
 		}
 
 		// Создаем необходимые таблицы
-		err = gormDb.AutoMigrate(models.UserModel{}, models.RefreshSession{})
+		err = gormDb.AutoMigrate(
+			models.UserModel{},
+			models.RefreshSession{},
+			models.Petition{},
+			models.Comment{},
+			models.Vote{},
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		// Создать уникальный индекс чтобы не было дважды голосовать в одну петицию
+		err = gormDb.Exec("CREATE UNIQUE INDEX idx_user_petition ON votes(user_id, petition_id)").Error
 		if err != nil {
 			return nil, err
 		}

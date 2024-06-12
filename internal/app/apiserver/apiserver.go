@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 	"os"
 	"petition_api/internal/app/handlers/httpHandlers"
+	"petition_api/internal/app/handlers/websocket"
 	repository "petition_api/internal/app/repositories"
 	"petition_api/utils/logger"
 )
@@ -43,7 +44,7 @@ func (s *ApiServer) Start() error {
 	s.router = gin.Default()
 	// Настройка CORS
 	s.router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:4200", "http://localhost:8080"},
+		AllowOrigins:     []string{"http://localhost:4200"},
 		AllowMethods:     []string{"POST", "GET", "PUT", "DELETE", "PATCH"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -62,6 +63,30 @@ func (s *ApiServer) Start() error {
 		s.logger)
 
 	userRoutes.BindUserToRoute(s.router.Group("/user"))
+
+	// Роуты для петиций
+	petitionRoutes := httpHandlers.NewPetitionModelRoute(
+		repository.NewPetitionRepository(s.db, s.logger),
+		s.logger,
+	)
+
+	petitionRoutes.BindPetitionToRoute(s.router.Group("/petition"))
+
+	// Роуты для комментов
+	commentRoutes := httpHandlers.NewCommentModelRoute(
+		repository.NewCommentRepository(s.db, s.logger),
+		s.logger,
+	)
+
+	commentRoutes.BindCommentToRoute(s.router.Group("/comment"))
+
+	// Вебсокет для голосов
+	voteRoute := websocket.NewVoteWebsocket(
+		repository.NewVoteRepository(s.db, s.logger),
+		s.logger,
+	)
+
+	voteRoute.AddToRoute(s.router.Group("/vote"))
 
 	s.logger.Info("API Server started!")
 	// Запуск сервера
